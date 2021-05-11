@@ -9,7 +9,7 @@ const MyApp = ({ Component, pageProps, currentUser }) => {
         <ChakraProvider>
             <div >
                 <Header currentUser={currentUser} />
-                <Component {...pageProps} />
+                <Component currentUser={currentUser} {...pageProps} />
             </div>
         </ChakraProvider>
     );
@@ -21,7 +21,7 @@ MyApp.getInitialProps = async (appContext) => {
 
     let pageProps = {};
     if (appContext.Component.getInitialProps) {
-        pageProps = await appContext.Component.getInitialProps(appContext.ctx);
+        pageProps = await appContext.Component.getInitialProps(appContext.ctx, client, data.currentUser);
     }
 
     return {

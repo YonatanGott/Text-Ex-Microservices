@@ -3,6 +3,8 @@ import { app } from "./app";
 import { natsWrapper } from "./nats-wrapper";
 import { BookCreatedListener } from "./events/listeners/book-created-listener";
 import { BookUpdatedListener } from "./events/listeners/book-updated-listener";
+import { ExpirationCompleteListener } from "./events/listeners/expiration-complete-listener";
+import { PaymentCreatedListener } from "./events/listeners/payment-created-listener";
 
 const start = async () => {
 	if (!process.env.JWT_KEY) {
@@ -35,6 +37,8 @@ const start = async () => {
 
 		new BookCreatedListener(natsWrapper.client).listen();
 		new BookUpdatedListener(natsWrapper.client).listen();
+		new ExpirationCompleteListener(natsWrapper.client).listen();
+		new PaymentCreatedListener(natsWrapper.client).listen();
 
 		await mongoose.connect(process.env.MONGO_URI, {
 			useNewUrlParser: true,

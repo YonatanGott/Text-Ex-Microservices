@@ -1,7 +1,24 @@
 import { Box, Heading, Grid, GridItem } from "@chakra-ui/react"
-import buildClient from '../api/build-client'
+import Link from 'next/link'
 
-const LandingPage = ({ currentUser }) => {
+
+const LandingPage = ({ currentUser, books }) => {
+
+    const bookList = books.map((book) => {
+        return (
+            <Box key={book.id} mb="4" ml="1">
+                <Heading isTruncated color="white" as="h4" size="md">{book.title},</Heading>
+                <Heading isTruncated color="white" as="h4" size="md">{book.author}</Heading>
+                <Heading color="white" as="h5" size="sm" >{book.price}$</Heading>
+                <Heading color="white" as="h6" size="xs">
+                    <Link href="/books/[bookId]" as={`/books/${book.id}`}>
+                        <a>View</a>
+                    </Link>
+                </Heading>
+            </Box>
+        );
+    });
+
 
     return (
         <Grid
@@ -10,9 +27,16 @@ const LandingPage = ({ currentUser }) => {
             templateColumns="repeat(5, 1fr)"
             gap={4}
         >
-            <GridItem rowSpan={2} colSpan={1} bg="black" ></GridItem>
-            <GridItem colSpan={1} bg="black" ></GridItem>
-            <GridItem colSpan={1} bg="black" ></GridItem>
+            <GridItem rowSpan={2} colSpan={1} bg="black" >
+                <Heading color="white" as="h2" size="xl" mb="4">Books:</Heading>
+                {bookList}
+            </GridItem>
+            <GridItem colSpan={1} bg="white" ></GridItem>
+            <GridItem colSpan={1} bg="black" d="flex" justifyContent="center" alignItems="center">
+                <Link href="/books/newBook">
+                    <a><Heading color="white" size="lg">Sell a Book</Heading></a>
+                </Link>
+            </GridItem>
             <GridItem colSpan={2} bg="white" d="flex" justifyContent="center" alignItems="center" >
                 <Box>
                     {
@@ -24,17 +48,23 @@ const LandingPage = ({ currentUser }) => {
                     }
                 </Box>
             </GridItem>
-            <GridItem colSpan={2} bg="black" ></GridItem>
-            <GridItem colSpan={2} bg="black" ></GridItem>
+            <GridItem colSpan={1} bg="black" >
+            </GridItem>
+            <GridItem colSpan={1} bg="white" >
+            </GridItem>
+            <GridItem colSpan={2} bg="black" d="flex" justifyContent="center" alignItems="center">
+                <Link href="/orders">
+                    <a><Heading color="white" size="lg"> My Orders</Heading></a>
+                </Link>
+            </GridItem>
         </Grid>
     )
 };
 
-LandingPage.getInitialProps = async (context) => {
-    const client = buildClient(context);
-    const { data } = await client.get('/api/users/currentuser');
+LandingPage.getInitialProps = async (context, client, currentUser) => {
+    const { data } = await client.get('/api/books');
 
-    return data;
+    return { books: data };
 };
 
 export default LandingPage;

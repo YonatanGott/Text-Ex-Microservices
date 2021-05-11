@@ -16,6 +16,7 @@ interface BookDoc extends mongoose.Document {
 	price: number;
 	userId: string;
 	version: number;
+	orderId?: string;
 }
 
 interface BookModel extends mongoose.Model<BookDoc> {
@@ -42,6 +43,9 @@ const bookSchema = new mongoose.Schema(
 		userId: {
 			type: String,
 			required: true,
+		},
+		orderId: {
+			type: String,
 		},
 	},
 	{

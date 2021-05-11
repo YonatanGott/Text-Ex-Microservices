@@ -5,6 +5,7 @@ import {
 	NotFoundError,
 	requireAuth,
 	NotAuthorizedError,
+	BadRequestError,
 } from "@keshetanan/common";
 import { Book } from "../models/book";
 import { BookUpdatedPublisher } from "../events/publishers/book-updated-pub";
@@ -29,6 +30,11 @@ router.put(
 		if (!book) {
 			throw new NotFoundError();
 		}
+
+		if (book.orderId) {
+			throw new BadRequestError("Book is reserved");
+		}
+
 		if (book.userId !== req.currentUser!.id) {
 			throw new NotAuthorizedError();
 		}

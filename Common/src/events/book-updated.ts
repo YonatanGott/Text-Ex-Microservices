@@ -10,5 +10,6 @@ export interface BookUpdatedEvent {
 		price: number;
 		userId: string;
 		version: number;
+		orderId?: string;
 	};
 }
