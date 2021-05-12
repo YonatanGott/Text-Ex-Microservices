@@ -11,7 +11,7 @@
   "author": "",
   "license": "ISC",
   "dependencies": {
-    "@keshetanan/common": "^1.0.10",
+    "@keshetanan/common": "^1.0.11",
     "@types/bull": "^3.15.1",
     "bull": "^3.22.4",
     "node-nats-streaming": "^0.3.2",
